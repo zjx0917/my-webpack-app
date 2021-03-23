@@ -1,0 +1,23 @@
+{
+    "presets": [
+        // 方式一 @babel/preset-env 将 es6 语法 转为 es5 语法，
+        [
+            "@babel/preset-env",
+            {
+                // useBuiltIns usage 表示只引入使用到的兼容低版本浏览器的 polyfill
+                "useBuiltIns": "usage",
+                // 打包生成的代码兼容到的浏览器的最低版本
+                "targets": {
+                    "chrome": "67",
+                    "firefox": "60"
+                }
+            }
+        ],
+        [
+            "@babel/preset-react"
+        ],
+        [
+            "@babel/preset-typescript"
+        ]
+    ]
+}

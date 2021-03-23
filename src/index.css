@@ -1,0 +1,11 @@
+@import "./test.css";
+
+div::nth-child(2n-1) {
+  background: red;
+}
+
+div:nth-child(2n) {
+  background: green;
+  display: flex;
+  font-size: large;
+}
