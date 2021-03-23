@@ -1,7 +1,16 @@
 {
     "compilerOptions": {
-        "target": "es6"
-    },
+        // 代码打包生成的文件放在 bundle 目录下，可以不写
+        "outDir": "./bundle",
+        // 指定 tsx 或者 ts 文件中要使用 es modules 的模块引入方式
+        "module": "es6",
+        // 指定打包生成的文件转换为 es5 的格式
+        "target": "es5",
+        // 为 true 表示可以在 tsx 或者 ts 文件中引入 js 文件
+        "allowJs": true,
+        // 指定 ts 编译器采用 node 方式解析查找 ts 中依赖的模块的位置
+        "moduleResolution": "node"
+      },
     "include": [
         "src"
     ]
