@@ -7,14 +7,33 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const postcssFlexbugsFixes = require("postcss-flexbugs-fixes");
 const autoprefixer = require("autoprefixer");
 
-const plugins = {};
-
-const makePlugins = (configs) => {};
+const makePlugins = (configs) => {
+  // 实例化需要使用的 plugin
+  const plugins = [
+    // webpack 使用 watch 模式时，cleanStaleWebpackAssets 设置为 false 防止把没有改变的文件给清除了
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    // 配合 loader 中的配置使用
+    new MiniCssExtractPlugin(),
+  ];
+  Object.keys(configs.entry).forEach((item) => {
+    plugins.push(
+      new HtmlWebpackPlugin({
+        // 接收一个模版文件，生成的 index.html 文件是以这个模版生成的
+        template: `./src/${item}.html`,
+        // 打包生成的 html 文件
+        filename: `${item}.html`,
+        // 打包生成的 html 文件需要引入的打包后的 js 文件
+        chunks: ["vendor", item],
+      })
+    );
+  });
+  return plugins;
+};
 
 // CommonJS 语法
 const commonConfig = {
   entry: {
-    bundle: "./src/index.js",
+    index: "./src/index.js",
     main: "./src/main.js",
   },
   output: {
@@ -46,19 +65,6 @@ const commonConfig = {
       },
     },
   },
-  // 实例化需要使用的 plugin
-  plugins: [
-    new HtmlWebpackPlugin({
-      // 接收一个模版文件，生成的 index.html 文件是以这个模版生成的
-      template: "./src/index.html",
-      filename: "index.html",
-      chunks: ["vendor", "bundle"],
-    }),
-    // webpack 使用 watch 模式时，cleanStaleWebpackAssets 设置为 false 防止把没有改变的文件给清除了
-    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-    // 配合 loader 中的配置使用
-    new MiniCssExtractPlugin(),
-  ],
   module: {
     rules: [
       {
@@ -155,4 +161,5 @@ const commonConfig = {
   },
 };
 
+commonConfig.plugins = makePlugins(commonConfig);
 module.exports = commonConfig;
